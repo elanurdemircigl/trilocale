@@ -1,0 +1,4 @@
+node_modules
+dist
+# Raw model sources (glTF/3DS/USDZ); the site uses public/models/apartment.glb
+3Ds/

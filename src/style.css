@@ -1,0 +1,352 @@
+:root {
+  --bg: #e9e6e1;
+  --ink: #1d1c1a;
+  --muted: #6b665e;
+  --card: rgba(250, 248, 244, 0.86);
+  --line: rgba(29, 28, 26, 0.12);
+  --accent: #d9772b;
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+html.locked {
+  overflow: hidden;
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  touch-action: pan-y;
+}
+
+/* ---------- loader ---------- */
+#loader {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 14px;
+  background: var(--bg);
+  font-family: var(--serif);
+  font-size: 20px;
+  z-index: 50;
+  transition: opacity 0.8s;
+}
+#loader p {
+  margin: 0;
+}
+#loader .bar {
+  width: 240px;
+  height: 2px;
+  background: var(--line);
+}
+#loader-progress {
+  height: 100%;
+  width: 0;
+  background: var(--ink);
+  transition: width 0.2s;
+}
+body.loaded #loader {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- chrome ---------- */
+#brand {
+  position: fixed;
+  top: 22px;
+  left: 28px;
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 600;
+  z-index: 10;
+}
+#brand em {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+#credit {
+  position: fixed;
+  right: 16px;
+  bottom: 10px;
+  font-size: 11px;
+  color: var(--muted);
+  z-index: 10;
+}
+#credit a {
+  color: inherit;
+}
+
+#nav {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 10;
+}
+#nav button {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+#nav button.current {
+  background: var(--ink);
+  transform: scale(1.3);
+}
+#nav button span {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#nav button:hover span,
+#nav button.current span {
+  opacity: 1;
+}
+
+/* ---------- scrolling sections ---------- */
+#sections {
+  position: relative;
+  pointer-events: none;
+  z-index: 5;
+}
+.stop {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  box-sizing: border-box;
+}
+.card {
+  pointer-events: auto;
+  width: min(360px, calc(100vw - 80px));
+  padding: 24px 26px;
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  opacity: 0.35;
+  transform: translateY(12px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.stop.current .card {
+  opacity: 1;
+  transform: none;
+}
+.kicker {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.card h2 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 1.1;
+  margin: 8px 0 10px;
+}
+.card p {
+  margin: 0;
+  line-height: 1.55;
+  color: #3b3833;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.chip {
+  font: 500 13px var(--sans);
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.scroll-hint {
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--muted);
+  animation: bob 1.8s ease-in-out infinite;
+}
+@keyframes bob {
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+/* ---------- furniture pins ---------- */
+#pins {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+.pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin: -9px 0 0 -9px;
+  border: 0;
+  background: none;
+  font: 500 12px var(--sans);
+  color: var(--ink);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.pin.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.pin i {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(217, 119, 43, 0.28);
+  animation: pulse 2s ease-out infinite;
+}
+.pin span {
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(217, 119, 43, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 12px rgba(217, 119, 43, 0);
+  }
+}
+
+/* ---------- focus mode ---------- */
+#focus-panel {
+  position: fixed;
+  left: 28px;
+  bottom: 40px;
+  width: min(340px, calc(100vw - 56px));
+  padding: 20px 22px;
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  z-index: 20;
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity 0.4s, transform 0.4s;
+}
+body.focusing #focus-panel {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+body.focusing #sections,
+body.focusing #nav {
+  opacity: 0;
+  pointer-events: none;
+}
+#sections,
+#nav {
+  transition: opacity 0.4s;
+}
+#focus-panel h3 {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 600;
+  margin: 6px 0 8px;
+}
+#focus-panel p {
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+#focus-panel small {
+  display: block;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+#focus-panel button {
+  font: 600 14px var(--sans);
+  padding: 9px 14px;
+  border-radius: 8px;
+  border: 0;
+  background: var(--ink);
+  color: #fff;
+  cursor: pointer;
+}
+#focus-panel kbd {
+  font: 11px var(--sans);
+  opacity: 0.6;
+  margin-left: 6px;
+}
+
+@media (max-width: 640px) {
+  #brand {
+    left: 16px;
+    top: 14px;
+  }
+  .stop {
+    align-items: flex-end;
+    padding: 0 16px 56px;
+  }
+  .card {
+    width: calc(100vw - 32px);
+    padding: 18px;
+  }
+  .card h2 {
+    font-size: 26px;
+  }
+  #nav {
+    right: 10px;
+  }
+  #focus-panel {
+    left: 16px;
+    bottom: 32px;
+  }
+}
